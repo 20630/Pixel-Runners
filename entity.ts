@@ -2,12 +2,22 @@ abstract class Entity {
     /**
      * The x position on the screen (0 - 4), from left to right.
      */
-    x: number;
+    xPosition: number;
 
     /**
      * The y position on the screen (0 - 4), from down to up.
      */
-    y: number;
+    yPosition: number;
+
+    /**
+     * The x velocity in pixels per frame.
+     */
+    xVelocity: number = 0;
+
+    /**
+     * The y velocity in pixels per frame.
+     */
+    yVelocity: number = 0;
 
     /**
      * Creates an entity and moves it to the given x and y positions.
@@ -26,8 +36,8 @@ abstract class Entity {
      * @param y The change in the y-axis.
      */
     move(x: number, y: number): void {
-        this.x += x;
-        this.y += y;
+        this.xPosition += x;
+        this.yPosition += y;
     }
 
     /**
@@ -37,8 +47,8 @@ abstract class Entity {
      * @param y The y position the entity should move to.
      */
     moveTo(x: number, y: number): void {
-        this.x = x;
-        this.y = y;
+        this.xPosition = x;
+        this.yPosition = y;
     }
 
     /**
@@ -48,7 +58,7 @@ abstract class Entity {
      * @param that The entity to compare to.
      */
     collidesWith(that: Entity): boolean {
-        if (this.x == that.x && this.y == that.y)
+        if (this.xPosition == that.xPosition && this.yPosition == that.yPosition)
             return true;
         return false;    
     }
