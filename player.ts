@@ -1,30 +1,47 @@
 class Player extends Entity {
-    inJump: boolean = false;
-    private jumpFrame: number = 0;
+    onGround: boolean = true;
+
+    inHover: boolean = false;
+    hoverStart: number;
+    private readonly maxHoverTime = 4;
+
+    private readonly minJumpHeight = 2;
+    private readonly maxJumpHeight = 3;
 
     constructor() {
         super(1, 0);
     }
 
     update(): void {
-        if (this.inJump) {
-            switch (this.jumpFrame) {
-                case 0:
-                case 1:
-                    this.move(0, 1);
-                    break;
-                case 3:
-                case 4:
-                    this.move(0, -1);
-                    break;   
+        let aDown = Game.isInput(Input.BUTTON_A_DOWN);
+        let aPressed = input.buttonIsPressed(Button.A);
+        if (aDown && this.onGround) {
+            this.yVelocity = 1;
+            this.onGround = false;
+        }
+
+        //Jumping/Airborne
+        if (this.yVelocity == 1) {
+            if (!aPressed && this.yPosition >= this.minJumpHeight) {
+                this.yVelocity = -1;
+            } else if (aPressed && this.yPosition >= this.maxJumpHeight) {
+                this.inHover = true;
+                this.hoverStart = Game.frameAmount;
+                this.yVelocity = 0;
             }
-            if (this.jumpFrame == 5) {
-                this.inJump = false;
-                this.jumpFrame = 0;
-            } else {
-                this.jumpFrame++;
-            }
-            
+        }
+
+        //Hovering
+        if (this.inHover && (!aPressed || Game.frameAmount >= this.hoverStart + this.maxHoverTime)) {
+            this.yVelocity = -1;
+            this.inHover = false;
+        }
+
+        this.move(this.xVelocity, this.yVelocity);
+
+        if (this.yPosition < 0) {
+            this.yPosition = 0;
+            this.onGround = true;
         }
     }
 }
