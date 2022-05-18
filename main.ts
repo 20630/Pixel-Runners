@@ -1,10 +1,39 @@
 class Game {
+    inGame: boolean = false;
     entities: Entity[] = [];
     screen: Image = images.createImage("");
     FRAME_RATE = 10; //Amount of frames per second, also determines game speed.
 
     constructor() {
+        this.menu();
         this.start();
+    }
+
+    menu () {
+        
+        while (!this.inGame) {
+            basic.showLeds(`
+            . # # # .
+            . # . . #
+            . # # # .
+            . # . . .
+            . # . . .
+            `)
+            basic.showLeds(`
+            # # # . .
+            # . . # .
+            # # # . .
+            # . . . .
+            # . . . .
+            `)
+
+            input.onButtonPressed(Button.B, () => {
+                if (!this.inGame) {
+                    this.inGame = true;
+                }
+            })
+        } 
+
     }
 
     start(): void {
@@ -35,6 +64,6 @@ class Game {
             basic.pause(start + 1000 / this.FRAME_RATE - input.runningTime());
         }
     }
-} 
+}
 
 const gamee: Game = new Game();
