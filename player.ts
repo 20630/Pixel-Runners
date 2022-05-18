@@ -2,7 +2,7 @@ class Player extends Entity {
     onGround: boolean = true;
     jumpPressed: boolean = false;
     inHover: boolean = false;
-    hoverStart: number; //Frame when hovering started
+    private hoverStart: number; //Frame when hovering started
 
     private readonly maxHoverTime = 4; //Time in frames
     private readonly minJumpHeight = 2;
