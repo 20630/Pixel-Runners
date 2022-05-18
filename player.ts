@@ -1,5 +1,6 @@
 class Player extends Entity {
     onGround: boolean = true;
+    jumpPressed: boolean = false;
 
     inHover: boolean = false;
     hoverStart: number;
@@ -14,17 +15,27 @@ class Player extends Entity {
 
     update(): void {
         let aDown = Game.isInput(Input.BUTTON_A_DOWN);
-        let aPressed = input.buttonIsPressed(Button.A);
+        let aUp = Game.isInput(Input.BUTTON_A_UP);
+
+        //Start jump
         if (aDown && this.onGround) {
             this.yVelocity = 1;
             this.onGround = false;
+            this.jumpPressed = true;
+        }
+
+        if (aUp && this.jumpPressed) {
+            this.jumpPressed = false;
         }
 
         //Jumping/Airborne
         if (this.yVelocity == 1) {
-            if (!aPressed && this.yPosition >= this.minJumpHeight) {
+            let atMin = this.yPosition >= this.minJumpHeight;
+            let atMax = this.yPosition >= this.maxJumpHeight;
+
+            if (!this.jumpPressed && atMin) {
                 this.yVelocity = -1;
-            } else if (aPressed && this.yPosition >= this.maxJumpHeight) {
+            } else if (this.jumpPressed && atMax) {
                 this.inHover = true;
                 this.hoverStart = Game.frameAmount;
                 this.yVelocity = 0;
@@ -32,7 +43,8 @@ class Player extends Entity {
         }
 
         //Hovering
-        if (this.inHover && (!aPressed || Game.frameAmount >= this.hoverStart + this.maxHoverTime)) {
+        let isMaxHovered = Game.frameAmount >= this.hoverStart + this.maxHoverTime;
+        if (this.inHover && (!this.jumpPressed || isMaxHovered)) {
             this.yVelocity = -1;
             this.inHover = false;
         }
