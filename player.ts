@@ -1,11 +1,10 @@
 class Player extends Entity {
     onGround: boolean = true;
     jumpPressed: boolean = false;
-
     inHover: boolean = false;
-    hoverStart: number;
-    private readonly maxHoverTime = 4;
+    hoverStart: number; //Frame when hovering started
 
+    private readonly maxHoverTime = 4; //Time in frames
     private readonly minJumpHeight = 2;
     private readonly maxJumpHeight = 3;
 
@@ -28,14 +27,14 @@ class Player extends Entity {
             this.jumpPressed = false;
         }
 
-        //Jumping/Airborne
+        //Airborne
         if (this.yVelocity == 1) {
-            let atMin = this.yPosition >= this.minJumpHeight;
-            let atMax = this.yPosition >= this.maxJumpHeight;
+            let atMinPos = this.yPosition >= this.minJumpHeight;
+            let atMaxPos = this.yPosition >= this.maxJumpHeight;
 
-            if (!this.jumpPressed && atMin) {
+            if (!this.jumpPressed && atMinPos) {
                 this.yVelocity = -1;
-            } else if (this.jumpPressed && atMax) {
+            } else if (this.jumpPressed && atMaxPos) {
                 this.inHover = true;
                 this.hoverStart = Game.frameAmount;
                 this.yVelocity = 0;
