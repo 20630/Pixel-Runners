@@ -1,5 +1,10 @@
 abstract class Entity {
     /**
+     * The game this entity is used in.
+     */
+    game: Game;
+
+    /**
      * The x position on the screen (0 - 4), from left to right.
      */
     xPosition: number;
@@ -25,7 +30,8 @@ abstract class Entity {
      * @param x The x position the entity should move to.
      * @param y The y position the entity should move to.
      */
-    constructor(x: number, y: number) {
+    constructor(x: number, y: number, game: Game) {
+        this.game = game;
         this.moveTo(x, y);
     };
 
@@ -61,6 +67,13 @@ abstract class Entity {
         if (this.xPosition == that.xPosition && this.yPosition == that.yPosition)
             return true;
         return false;    
+    }
+
+    /**
+     * Removes this entity from memory and the screen.
+     */
+    destroy(): void {
+        this.game.entities.removeElement(this);
     }
 
     /**

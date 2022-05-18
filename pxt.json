@@ -11,7 +11,8 @@
         "README.md",
         "player.ts",
         "entity.ts",
-        "input.ts"
+        "input.ts",
+        "obstacle.ts"
     ],
     "testFiles": [
         "test.ts"

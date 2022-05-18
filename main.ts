@@ -1,17 +1,17 @@
 class Game {
     entities: Entity[] = [];
     screen: Image = images.createImage("");
-    FRAME_RATE = 10; //Amount of frames per second, also determines game speed.
+    readonly FRAME_RATE = 10; //Amount of frames per second, also determines game speed.
 
-    static frameAmount: number = 0;
-    static inputs: Input[] = [];
+    frameAmount: number = 0;
+    inputs: Input[] = [];
 
     constructor() {
         this.start();
     }
 
     start(): void {
-        const player: Player = new Player();
+        const player: Player = new Player(this);
         this.entities.push(player);
 
         //Handling inputs
@@ -19,26 +19,30 @@ class Game {
             EventBusSource.MICROBIT_ID_BUTTON_A,
             EventBusValue.MICROBIT_BUTTON_EVT_DOWN,
             () => {
-                if (!Game.isInput(Input.BUTTON_A_DOWN))
-                    Game.inputs.push(Input.BUTTON_A_DOWN);
+                if (!this.isInput(Input.BUTTON_A_DOWN))
+                    this.inputs.push(Input.BUTTON_A_DOWN);
             });
         control.onEvent(
             EventBusSource.MICROBIT_ID_BUTTON_A,
             EventBusValue.MICROBIT_BUTTON_EVT_UP,
             () => {
-                if (!Game.isInput(Input.BUTTON_A_UP))
-                    Game.inputs.push(Input.BUTTON_A_UP);
+                if (!this.isInput(Input.BUTTON_A_UP))
+                    this.inputs.push(Input.BUTTON_A_UP);
             });
 
         while (true) {
             let start: number = input.runningTime();
 
-            //Updating entities
-            for (const entity of this.entities) {
-                entity.update();
+            if (this.frameAmount % 10 == 0) {
+                this.entities.push(new Obstacle(this));
             }
 
-            Game.inputs = [];
+            //Updating entities
+            for (const e of this.entities) {
+                e.update();
+            }
+
+            this.inputs = [];
 
             //Rendering entities
             this.screen.clear();
@@ -47,15 +51,15 @@ class Game {
             }
             this.screen.plotImage();
 
-            Game.frameAmount++;
+            this.frameAmount++;
 
             //Pauses the program so it has a stable frame rate.
             basic.pause(start + 1000 / this.FRAME_RATE - input.runningTime());
         }
     }
 
-    static isInput(input: Input) {
-        return Game.inputs.indexOf(input) != -1;
+    isInput(input: Input): boolean {
+        return this.inputs.indexOf(input) != -1;
     }
 }
 
