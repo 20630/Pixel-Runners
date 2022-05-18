@@ -4,9 +4,9 @@ class Player extends Entity {
     inHover: boolean = false;
     private hoverStart: number; //Frame when hovering started
 
-    private readonly maxHoverTime = 4; //Time in frames
-    private readonly minJumpHeight = 2;
-    private readonly maxJumpHeight = 3;
+    private readonly MAX_HOVER_TIME = 4; //Time in frames
+    private readonly MIN_JUMP_HEIGHT = 2;
+    private readonly MAX_JUMP_HEIGHT = 3;
 
     constructor() {
         super(1, 0);
@@ -29,8 +29,8 @@ class Player extends Entity {
 
         //Airborne
         if (this.yVelocity == 1) {
-            let atMinPos = this.yPosition >= this.minJumpHeight;
-            let atMaxPos = this.yPosition >= this.maxJumpHeight;
+            let atMinPos = this.yPosition >= this.MIN_JUMP_HEIGHT;
+            let atMaxPos = this.yPosition >= this.MAX_JUMP_HEIGHT;
 
             if (!this.jumpPressed && atMinPos) {
                 this.yVelocity = -1;
@@ -42,7 +42,7 @@ class Player extends Entity {
         }
 
         //Hovering
-        let isMaxHovered = Game.frameAmount >= this.hoverStart + this.maxHoverTime;
+        let isMaxHovered = Game.frameAmount >= this.hoverStart + this.MAX_HOVER_TIME;
         if (this.inHover && (!this.jumpPressed || isMaxHovered)) {
             this.yVelocity = -1;
             this.inHover = false;
