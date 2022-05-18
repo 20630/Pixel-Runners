@@ -10,7 +10,8 @@
         "main.ts",
         "README.md",
         "player.ts",
-        "entity.ts"
+        "entity.ts",
+        "input.ts"
     ],
     "testFiles": [
         "test.ts"
