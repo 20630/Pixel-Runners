@@ -50,9 +50,9 @@ class Player extends Entity {
 
         this.move(this.xVelocity, this.yVelocity);
 
-        if (this.yPosition < 0) {
-            this.yPosition = 0;
+        if (!this.onGround && this.yPosition == 0) {
             this.onGround = true;
+            this.yVelocity = 0;
         }
     }
 }
