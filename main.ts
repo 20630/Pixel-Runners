@@ -10,7 +10,28 @@ class Game {
     }
 
     menu () {
-        
+        basic.showLeds(`
+        # # # # #
+        # # # # #
+        # # # # #
+        # # # # #
+        # # # # #
+        `)
+        basic.showLeds(`
+        . . . . .
+        . # # # .
+        . # # # .
+        . # # # .
+        . . . . .
+        `)
+        basic.showLeds(`
+        . . . . .
+        . . . . .
+        . . # . .
+        . . . . .
+        . . . . .
+        `)
+
         while (!this.inGame) {
             basic.showLeds(`
             . # # # .
@@ -20,11 +41,11 @@ class Game {
             . # . . .
             `)
             basic.showLeds(`
-            # # # . .
-            # . . # .
-            # # # . .
-            # . . . .
-            # . . . .
+            . . . . .
+            . . . . .
+            . . . . .
+            . . . . .
+            . . . . .
             `)
 
             input.onButtonPressed(Button.B, () => {
