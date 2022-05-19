@@ -1,4 +1,6 @@
 class Player extends Entity {
+    isAlive: boolean = true;
+
     onGround: boolean = true;
     jumpPressed: boolean = false;
     inHover: boolean = false;
@@ -54,5 +56,9 @@ class Player extends Entity {
             this.onGround = true;
             this.yVelocity = 0;
         }
+    }
+
+    onCollision(collidedWith: Entity): void {
+        this.isAlive = false;
     }
 }

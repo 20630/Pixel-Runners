@@ -70,7 +70,7 @@ abstract class Entity {
     }
 
     /**
-     * Removes this entity from memory and the screen.
+     * Removes the entity from memory and the screen.
      */
     destroy(): void {
         this.game.entities.removeElement(this);
@@ -81,4 +81,10 @@ abstract class Entity {
      * This method is called every frame.
      */
     update(): void {}
+
+    /**
+     * Fires when the entity collides with another entity.
+     * This method is called every frame after the update method.
+     */
+    onCollision(collidedWith: Entity) {}
 }

@@ -30,7 +30,7 @@ class Game {
                     this.inputs.push(Input.BUTTON_A_UP);
             });
 
-        while (true) {
+        while (player.isAlive) {
             let start: number = input.runningTime();
 
             if (this.frameAmount % 10 == 0) {
@@ -40,6 +40,14 @@ class Game {
             //Updating entities
             for (const e of this.entities) {
                 e.update();
+            }
+
+            //Collision check
+            for (const e of this.entities) {
+                if (e == player) continue;
+                if (player.collidesWith(e)) {
+                    player.onCollision(e);
+                }
             }
 
             this.inputs = [];
