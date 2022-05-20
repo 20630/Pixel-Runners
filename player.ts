@@ -60,5 +60,6 @@ class Player extends Entity {
 
     onCollision(collidedWith: Entity): void {
         this.isAlive = false;
+        this.game.entities = [];
     }
 }
