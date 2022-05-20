@@ -1,5 +1,10 @@
 abstract class Entity {
     /**
+     * The game this entity is used in.
+     */
+    game: Game;
+
+    /**
      * The x position on the screen (0 - 4), from left to right.
      */
     xPosition: number;
@@ -25,7 +30,8 @@ abstract class Entity {
      * @param x The x position the entity should move to.
      * @param y The y position the entity should move to.
      */
-    constructor(x: number, y: number) {
+    constructor(x: number, y: number, game: Game) {
+        this.game = game;
         this.moveTo(x, y);
     };
 
@@ -64,8 +70,22 @@ abstract class Entity {
     }
 
     /**
+     * Removes the entity from memory and the screen.
+     */
+    destroy(): void {
+        if (this.game.entities.indexOf(this) == -1) return;
+        this.game.entities.removeElement(this);
+    }
+
+    /**
      * Updates the state of the entity.
      * This method is called every frame.
      */
     update(): void {}
+
+    /**
+     * Fires when the entity collides with another entity.
+     * This method is called every frame after the update method.
+     */
+    onCollision(collidedWith: Entity) {}
 }
