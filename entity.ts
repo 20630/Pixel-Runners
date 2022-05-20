@@ -73,6 +73,7 @@ abstract class Entity {
      * Removes the entity from memory and the screen.
      */
     destroy(): void {
+        if (this.game.entities.indexOf(this) == -1) return;
         this.game.entities.removeElement(this);
     }
 

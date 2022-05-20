@@ -12,7 +12,8 @@
         "player.ts",
         "entity.ts",
         "input.ts",
-        "obstacle.ts"
+        "obstacle.ts",
+        "game.ts"
     ],
     "testFiles": [
         "test.ts"
