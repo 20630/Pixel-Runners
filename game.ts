@@ -58,10 +58,12 @@ class Game {
     render(): void {
         this.screen.clear();
         for (const e of this.entities) {
-            this.screen.setPixel(e.xPosition, 4 - e.yPosition, true); // 4 - y because y is from down to up instead of up to down.
+            for (const p of e.leds) {
+                this.screen.setPixel(p.x, 4 - p.y, true); // 4 - y because y is from down to up instead of up to down.
+            }
         }
         this.screen.plotImage();
-
+        
         this.frameAmount++;
     }
 

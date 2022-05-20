@@ -1,18 +1,11 @@
+/**
+ * An entity represented by one or more leds.
+ */
 abstract class Entity {
     /**
-     * The game this entity is used in.
+     * The game the entity is used in.
      */
     game: Game;
-
-    /**
-     * The x position on the screen (0 - 4), from left to right.
-     */
-    xPosition: number;
-
-    /**
-     * The y position on the screen (0 - 4), from down to up.
-     */
-    yPosition: number;
 
     /**
      * The x velocity in pixels per frame.
@@ -25,14 +18,20 @@ abstract class Entity {
     yVelocity: number = 0;
 
     /**
-     * Creates an entity and moves it to the given x and y positions.
+     * The leds that represent the entity.
+     */
+    leds: Led[] = [];
+
+    /**
+     * Creates an entity with a single led.
      * 
-     * @param x The x position the entity should move to.
-     * @param y The y position the entity should move to.
+     * @param x The x position the led should be.
+     * @param y The y position the led should be.
+     * @param game The game the entity is used in.
      */
     constructor(x: number, y: number, game: Game) {
+        this.leds.push(new Led(x, y));
         this.game = game;
-        this.moveTo(x, y);
     };
 
     /**
@@ -42,19 +41,56 @@ abstract class Entity {
      * @param y The change in the y-axis.
      */
     move(x: number, y: number): void {
-        this.xPosition += x;
-        this.yPosition += y;
+        for (const l of this.leds) {
+            l.x += x;
+            l.y += y;
+        }
     }
 
     /**
-     * Moves the entity to the given x and y positions.
+     * Adds a led that should represent the entity.
      * 
-     * @param x The x position the entity should move to.
-     * @param y The y position the entity should move to.
+     * @param x The x position the led should move to.
+     * @param y The y position the led should move to.
      */
-    moveTo(x: number, y: number): void {
-        this.xPosition = x;
-        this.yPosition = y;
+    addLed(x: number, y: number): void {
+        this.leds.push(new Led(x, y));
+    }
+
+    /**
+     * Gets the x position of the first led.
+     * This should generally only be used when the entity consists of a single led.
+     */
+    get xPosition() {
+        return this.leds[0].x;
+    }
+
+    /**
+     * Gets the y position of the first led.
+     * This should generally only be used when the entity consists of a single led.
+     */
+    get yPosition() {
+        return this.leds[0].y;
+    }
+
+    /**
+     * Sets the x position of the first led.
+     * This should generally only be used when the entity consists of a single led.
+     * 
+     * @param xPosition The x position the led should move to.
+     */
+    set xPosition(xPosition: number) {
+        this.leds[0].x = xPosition;
+    }
+
+    /**
+     * Sets the y position of the first led.
+     * This should generally only be used when the entity consists of a single led.
+     *
+     * @param yPosition The y position the led should move to.
+     */
+    set yPosition(yPosition: number) {
+        this.leds[0].y = yPosition;
     }
 
     /**
@@ -64,8 +100,12 @@ abstract class Entity {
      * @param that The entity to compare to.
      */
     collidesWith(that: Entity): boolean {
-        if (this.xPosition == that.xPosition && this.yPosition == that.yPosition)
-            return true;
+        for (const p1 of this.leds) {
+            for (const p2 of that.leds) {
+                if (p1.x == p2.x && p1.y == p2.y)
+                    return true;
+            }
+        }
         return false;    
     }
 
@@ -86,6 +126,8 @@ abstract class Entity {
     /**
      * Fires when the entity collides with another entity.
      * This method is called every frame after the update method.
+     * 
+     * @param collidedWith The entity it has colided with.
      */
     onCollision(collidedWith: Entity) {}
 }

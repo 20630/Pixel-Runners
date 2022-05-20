@@ -9,7 +9,7 @@ class Player extends Entity {
     private readonly MAX_JUMP_HEIGHT = 3;
 
     constructor(game: Game) {
-        super(1, 0, game);
+        super(0, 0, game);
     }
 
     update(): void {
