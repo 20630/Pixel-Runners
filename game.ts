@@ -24,6 +24,7 @@ class Game {
 
         while (true) {
             let start: number = input.runningTime();
+            let gameScore: number = 0;
 
             switch (this.gameState) {
                 case GameState.MENU:
@@ -34,6 +35,10 @@ class Game {
                     }
                     break;
                 case GameState.IN_GAME:
+                    while (GameState.IN_GAME) {
+                        
+                    }
+
                     if (this.frameAmount % 10 == 0) {
                         this.entities.push(new Obstacle(this));
                     }
