@@ -19,7 +19,6 @@ class Game {
 
     start(): void {
         let player: Player;
-
         this.registerInputListeners();
 
         while (true) {
@@ -27,6 +26,23 @@ class Game {
 
             switch (this.gameState) {
                 case GameState.MENU:
+                    while (!this.isInput(Input.BUTTON_A_CLICK)) {
+                        basic.showLeds(`
+                        . . . . .
+                        . . . . .
+                        . . . . .
+                        . . . . .
+                        . . . . .
+                        `)
+                        basic.showLeds(`
+                        . # # # .
+                        . # . . #
+                        . # # # .
+                        . # . . .
+                        . # . . .
+                        `)
+                    }
+
                     if (this.isInput(Input.BUTTON_A_CLICK)) {
                         player = new Player(this);
                         this.entities.push(player);

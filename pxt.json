@@ -13,7 +13,8 @@
         "entity.ts",
         "input.ts",
         "obstacle.ts",
-        "game.ts"
+        "game.ts",
+        "menu.ts"
     ],
     "testFiles": [
         "test.ts"
