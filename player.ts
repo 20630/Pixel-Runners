@@ -4,12 +4,12 @@ class Player extends Entity {
     inHover: boolean = false;
     private hoverStart: number; //Frame when hovering started
 
-    private readonly MAX_HOVER_TIME = 4; //Time in frames
+    private readonly MAX_HOVER_TIME = 5; //Time in frames
     private readonly MIN_JUMP_HEIGHT = 2;
     private readonly MAX_JUMP_HEIGHT = 3;
 
     constructor(game: Game) {
-        super(1, 0, game);
+        super(0, 0, game);
     }
 
     update(): void {
