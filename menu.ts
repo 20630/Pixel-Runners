@@ -1,18 +1,20 @@
 class Menu {
     state: number = 0;
 
-    constructor() {
-        this.startGame();
-    }
-    
-    startGame () {
-        input.onButtonPressed(Button.A, function() {
-            const gamee: Game = new Game();
-        })
-    }
+    constructor () {}
 
     update(): void {
         switch (this.state) {
+            case 0: 
+                basic.showLeds(`
+                . . . . .
+                . . . . .
+                . . . . .
+                . . . . .
+                . . . . .
+                `);
+                this.state++;
+                break;
             case 1:
                 basic.showLeds(`
                 . # # # .
@@ -20,7 +22,7 @@ class Menu {
                 . # # # .
                 . # . . .
                 . # . . .
-                `)
+                `);
                 this.state++;
                 break;
             case 2:
@@ -30,13 +32,9 @@ class Menu {
                 . . . . .
                 . . . . .
                 . . . . .
-                `)
-                this.state--;
+                `);
+                this.state = 0;
+                break;
         }
     }
-
-    
-    
-    
-    
 }
