@@ -10,7 +10,14 @@ class Obstacle extends Entity {
     update(): void {
         this.xVelocity = -1 / (4 - Math.clamp(1, 3, this.speed));
         this.move(this.xVelocity, this.yVelocity);
-        if (this.xPosition < 1 - this.leds.length) {
+
+        let mostRightLed = this.leds[0];
+        for (const l of this.leds) {
+            if (l.x > mostRightLed.x)
+                mostRightLed = l;
+        }
+
+        if (mostRightLed.x < 0) {
             this.destroy();
         }
     }
