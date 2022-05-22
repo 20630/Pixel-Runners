@@ -21,14 +21,16 @@ class Game {
     inputs: Input[];
     entities: Entity[];
 
+    menu: Menu;
+
     constructor() {
         this.start();
     }
 
     start(): void {
         let player: Player;
-
         this.registerInputListeners();
+        this.menu = new Menu();
 
         this.screen = images.createImage("");
         this.gameState = GameState.MENU;
@@ -41,6 +43,8 @@ class Game {
 
             switch (this.gameState as number) {
                 case GameState.MENU:
+                    this.menu.update();
+
                     if (this.isInput(Input.BUTTON_A_CLICK)) {
                         this.play();
                     }
