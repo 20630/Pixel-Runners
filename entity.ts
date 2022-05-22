@@ -40,11 +40,12 @@ abstract class Entity {
      * @param x The change in the x-axis.
      * @param y The change in the y-axis.
      */
-    move(x: number, y: number): void {
+    move(x: number, y: number): Entity {
         for (const l of this.leds) {
             l.x += x;
             l.y += y;
         }
+        return this;
     }
 
     /**
@@ -53,8 +54,20 @@ abstract class Entity {
      * @param x The x position the led should move to.
      * @param y The y position the led should move to.
      */
-    addLed(x: number, y: number): void {
+    addLed(x: number, y: number): Entity {
         this.leds.push(new Led(x, y));
+        return this;
+    }
+
+    /**
+     * Adds a led that should represent the entity.
+     * 
+     * @param x The x position the led should move to relative to the first led.
+     * @param y The y position the led should move to relative to the first led.
+     */
+    addRelativeLed(x: number, y: number): Entity {
+        this.leds.push(new Led(this.xPosition + x, this.yPosition + y));
+        return this;
     }
 
     /**
@@ -102,7 +115,7 @@ abstract class Entity {
     collidesWith(that: Entity): boolean {
         for (const p1 of this.leds) {
             for (const p2 of that.leds) {
-                if (p1.x == p2.x && p1.y == p2.y)
+                if (Math.floor(p1.x) == Math.floor(p2.x) && Math.floor(p1.y) == Math.floor(p2.y))
                     return true;
             }
         }
