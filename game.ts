@@ -12,7 +12,7 @@ class Game {
     levelDistance: number;
     nextSpawn: Obstacle;
     nextSpawnTime: number;
-    private readonly TIME_BETWEEN_LEVELS: number = 20;
+    private readonly TIME_BETWEEN_LEVELS: number = 10;
 
     frameAmount: number;
     readonly FRAME_RATE = 10; //Amount of frames per second, also determines game speed.
@@ -52,7 +52,7 @@ class Game {
                     let afterEnd = this.levelDistance > level.length + this.TIME_BETWEEN_LEVELS;
 
                     if (afterEnd) {
-                        if (this.level == 12903812903) {
+                        if (this.level == 10) {
                             this.gameState = GameState.MENU;
                             this.entities = [];
                         } else {
