@@ -19,6 +19,7 @@ class Obstacle extends Entity {
 
         if (mostRightLed.x < 0) {
             this.destroy();
+            this.game.score++;
         }
     }
 }

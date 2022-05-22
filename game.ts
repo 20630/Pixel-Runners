@@ -60,7 +60,7 @@ class Game {
 
                     if (afterEnd) {
                         if (this.level == 10) {
-                            this.gameState = GameState.MENU;
+                            this.gameState = GameState.SCORE;
                             this.entities = [];
                         } else {
                             this.nextLevel();
@@ -91,10 +91,20 @@ class Game {
                     this.checkCollisions();
                     this.levelDistance++;
                     break;
+                case GameState.SCORE:
+                    if (this.isInput(Input.BUTTON_A_CLICK)) {
+                        this.gameState = GameState.MENU;
+                    }
+                    break;    
             }
 
             this.inputs = [];
-            this.render();
+            
+            //Score uses normal basic.showNumber(), so don't override that.
+            //Might change this because it looks ugly.
+            if (this.gameState as number != GameState.SCORE) 
+                this.render();
+            
             this.frameAmount++;
 
             //Pauses the program so it has a stable frame rate.
