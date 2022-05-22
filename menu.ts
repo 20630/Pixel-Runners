@@ -23,6 +23,16 @@ class Menu {
                 . # . . .
                 . # . . .
                 `);
+                this.state++;
+                break;
+            case 2:
+                basic.showLeds(`
+                . . . . .
+                . . . . .
+                . . . . .
+                . . . . .
+                . . . . .
+                `);
                 this.state = 0;
                 break;
         }
