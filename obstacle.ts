@@ -26,10 +26,10 @@ class Obstacle extends Entity {
 class Obstacles {
     public static readonly SMALL: number = 0;
     public static readonly MEDIUM: number = 1;
-    public static readonly HIGH: number = 2;
+    public static readonly BIG: number = 2;
     public static readonly SMALL_WIDE: number = 3;
     public static readonly MEDIUM_WIDE: number = 4;
-    public static readonly HIGH_WIDE: number = 5;
+    public static readonly BIG_WIDE: number = 5;
     public static readonly SMALL_HEAD_HITTER: number = 6;
 
     public static getObstacle(obstacle: number, game: Game) {
@@ -40,7 +40,7 @@ class Obstacles {
             case this.MEDIUM:
                 o.addRelativeLed(0, 1);
                 break;
-            case this.HIGH:
+            case this.BIG:
                 o.addRelativeLed(0, 1)
                  .addRelativeLed(0, 2);
                 break;
@@ -52,7 +52,7 @@ class Obstacles {
                  .addRelativeLed(0, 1)
                  .addRelativeLed(1, 1);
                 break;
-            case this.HIGH_WIDE:
+            case this.BIG_WIDE:
                 o.addRelativeLed(1, 0)
                  .addRelativeLed(0, 1)
                  .addRelativeLed(1, 1)

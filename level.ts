@@ -1,7 +1,7 @@
 class Level {
     length: number;
     speed: number;
-    possiblyObstacles: Obstacle[];
+    possibleObstacles: Obstacle[];
 }
 
 class Levels {
@@ -10,8 +10,8 @@ class Levels {
     public static getLevel(level: number, game: Game): Level {
         let l: Level = new Level();
         switch (level) {
-            case 1:
-                l.length = 200;
+            case 1: {
+                l.length = 100;
                 l.speed = 1;
 
                 let o1 = Obstacles.getObstacle(Obstacles.SMALL, game);
@@ -19,19 +19,38 @@ class Levels {
                 o1.minRestTime = 20;
                 o1.maxRestTime = 30;
 
-                l.possiblyObstacles = [o1];
+                l.possibleObstacles = [o1];
                 break;
-            case 2:
-                l.length = 200;
+            }
+            case 2: {
+                l.length = 100;
                 l.speed = 1;
 
-                let o2 = Obstacles.getObstacle(Obstacles.SMALL, game);
-                o2.speed = l.speed;
-                o2.minRestTime = 20;
-                o2.maxRestTime = 30;
+                let o1 = Obstacles.getObstacle(Obstacles.MEDIUM, game);
+                o1.speed = l.speed;
+                o1.minRestTime = 20;
+                o1.maxRestTime = 30;
 
-                l.possiblyObstacles = [o2];
+                l.possibleObstacles = [o1];
                 break;
+            }
+            case 3: {
+                l.length = 100;
+                l.speed = 1;
+
+                let o1 = Obstacles.getObstacle(Obstacles.SMALL, game);
+                o1.speed = l.speed;
+                o1.minRestTime = 10;
+                o1.maxRestTime = 20;
+
+                let o2 = Obstacles.getObstacle(Obstacles.MEDIUM, game);
+                o2.speed = l.speed;
+                o2.minRestTime = 10;
+                o2.maxRestTime = 20;
+
+                l.possibleObstacles = [o1, o2];
+                break;
+            }
         }
         return l;
     }

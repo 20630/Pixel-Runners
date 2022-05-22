@@ -48,24 +48,33 @@ class Game {
                 case GameState.IN_GAME:
                     let level = Levels.getLevel(this.level, this);
                     
-                    let beforeStart = this.levelDistance < this.TIME_BETWEEN_LEVELS;
+                    let beforeStart = this.levelDistance <= this.TIME_BETWEEN_LEVELS;
                     let afterEnd = this.levelDistance > level.length + this.TIME_BETWEEN_LEVELS;
 
                     if (afterEnd) {
-                        if (this.level == 2) {
+                        if (this.level == 12903812903) {
                             this.gameState = GameState.MENU;
                             this.entities = [];
                         } else {
-                            this.level++;
-                            this.levelDistance = 0;
+                            this.nextLevel();
                         }
                     }
+
+                    //recalculate because level change possibly.
+                    level = Levels.getLevel(this.level, this);
+                    beforeStart = this.levelDistance <= this.TIME_BETWEEN_LEVELS;
 
                     if (!beforeStart) {
                         if (this.nextSpawnTime == 0) {
                             this.entities.push(this.nextSpawn);
-                            this.nextSpawn = level.possiblyObstacles.get(Math.randomRange(0, level.possiblyObstacles.length - 1));
-                            this.nextSpawnTime = Math.randomRange(this.nextSpawn.minRestTime, this.nextSpawn.maxRestTime);
+                            this.nextSpawn = level.possibleObstacles.get(Math.randomRange(0, level.possibleObstacles.length - 1));
+
+                            if (this.levelDistance + this.nextSpawn.minRestTime > level.length + this.TIME_BETWEEN_LEVELS) {
+                               //not enough time to spawn another obstacle.
+                               this.nextSpawnTime = -1;
+                            } else {
+                               this.nextSpawnTime = Math.randomRange(this.nextSpawn.minRestTime, this.nextSpawn.maxRestTime);
+                            }
                         } else {
                             this.nextSpawnTime--;
                         }
@@ -92,12 +101,21 @@ class Game {
         this.level = 1;
         this.levelDistance = 0;
 
-        let l = Levels.getLevel(1, this);
-        this.nextSpawn = l.possiblyObstacles.get(Math.randomRange(0, l.possiblyObstacles.length - 1));
+        let l = Levels.getLevel(this.level, this);
+        this.nextSpawn = l.possibleObstacles.get(Math.randomRange(0, l.possibleObstacles.length - 1));
         this.nextSpawnTime = 0;
 
         this.player = new Player(this);
         this.entities.push(this.player);
+    }
+
+    nextLevel() {
+        this.level++;
+        this.levelDistance = 0;
+
+        let l = Levels.getLevel(this.level, this);
+        this.nextSpawn = l.possibleObstacles.get(Math.randomRange(0, l.possibleObstacles.length - 1));
+        this.nextSpawnTime = 0;
     }
 
     isInput(input: Input): boolean {
