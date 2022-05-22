@@ -57,7 +57,7 @@ class Player extends Entity {
     }
 
     onCollision(collidedWith: Entity): void {
-        //this.game.gameState = GameState.MENU;
-        //this.game.entities = [];
+        this.game.gameState = GameState.MENU;
+        this.game.entities = [];
     }
 }
