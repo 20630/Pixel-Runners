@@ -5,34 +5,32 @@ class Level {
 }
 
 class Levels {
-    public static readonly 1: number = 1;
-    public static readonly 2: number = 2;
+    public static readonly levelAmount = 5;
 
     public static getLevel(level: number, game: Game): Level {
         let l: Level = new Level();
         switch (level) {
             case 1:
-                l.length = 10000000;
+                l.length = 200;
                 l.speed = 1;
 
                 let o1 = Obstacles.getObstacle(Obstacles.SMALL, game);
                 o1.speed = l.speed;
-                o1.minRestTime = 10;
-                o1.maxRestTime = 20;
+                o1.minRestTime = 20;
+                o1.maxRestTime = 30;
 
-                let o2 = Obstacles.getObstacle(Obstacles.MEDIUM, game);
-                o2.speed = l.speed;
-                o2.minRestTime = 10;
-                o2.maxRestTime = 20;
-
-                l.possiblyObstacles = [o1, o2];
+                l.possiblyObstacles = [o1];
                 break;
             case 2:
-                l.length = 100;
+                l.length = 200;
                 l.speed = 1;
-                l.possiblyObstacles = [
-                    Obstacles.getObstacle(Obstacles.MEDIUM, game)
-                ];
+
+                let o2 = Obstacles.getObstacle(Obstacles.SMALL, game);
+                o2.speed = l.speed;
+                o2.minRestTime = 20;
+                o2.maxRestTime = 30;
+
+                l.possiblyObstacles = [o2];
                 break;
         }
         return l;

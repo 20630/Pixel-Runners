@@ -5,20 +5,21 @@ enum GameState {
 }
 
 class Game {
-    screen: Image = images.createImage("");
-    gameState: GameState = GameState.MENU;
+    screen: Image;
+    gameState: GameState;
 
-    level: number = 1;
-    levelDistance: number = 0;
+    level: number;
+    levelDistance: number;
     nextSpawn: Obstacle;
-    nextSpawnTime: number = 0;
+    nextSpawnTime: number;
     private readonly TIME_BETWEEN_LEVELS: number = 20;
 
-    frameAmount: number = 0;
+    frameAmount: number;
     readonly FRAME_RATE = 10; //Amount of frames per second, also determines game speed.
 
-    inputs: Input[] = [];
-    entities: Entity[] = [];
+    player: Player;
+    inputs: Input[];
+    entities: Entity[];
 
     constructor() {
         this.start();
@@ -29,17 +30,19 @@ class Game {
 
         this.registerInputListeners();
 
+        this.screen = images.createImage("");
+        this.gameState = GameState.MENU;
+        this.frameAmount = 0;
+        this.inputs = [];
+        this.entities = [];
+
         while (true) {
             let start: number = input.runningTime();
 
-            switch (this.gameState) {
+            switch (this.gameState as number) {
                 case GameState.MENU:
                     if (this.isInput(Input.BUTTON_A_CLICK)) {
-                        player = new Player(this);
-                        this.entities.push(player);
-                        this.gameState = GameState.IN_GAME;
-                        this.level = 1;
-                        this.levelDistance = 0;
+                        this.play();
                     }
                     break;
                 case GameState.IN_GAME:
@@ -49,15 +52,17 @@ class Game {
                     let afterEnd = this.levelDistance > level.length + this.TIME_BETWEEN_LEVELS;
 
                     if (afterEnd) {
-                        this.level++;
-                        this.levelDistance = 0;
+                        if (this.level == 2) {
+                            this.gameState = GameState.MENU;
+                            this.entities = [];
+                        } else {
+                            this.level++;
+                            this.levelDistance = 0;
+                        }
                     }
 
                     if (!beforeStart) {
                         if (this.nextSpawnTime == 0) {
-                            if (this.nextSpawn == null) {
-                                this.nextSpawn = level.possiblyObstacles.get(Math.randomRange(0, level.possiblyObstacles.length - 1));
-                            }
                             this.entities.push(this.nextSpawn);
                             this.nextSpawn = level.possiblyObstacles.get(Math.randomRange(0, level.possiblyObstacles.length - 1));
                             this.nextSpawnTime = Math.randomRange(this.nextSpawn.minRestTime, this.nextSpawn.maxRestTime);
@@ -79,6 +84,20 @@ class Game {
             //Pauses the program so it has a stable frame rate.
             basic.pause(start + 1000 / this.FRAME_RATE - input.runningTime());
         }
+    }
+
+    play() {
+        this.gameState = GameState.IN_GAME;
+
+        this.level = 1;
+        this.levelDistance = 0;
+
+        let l = Levels.getLevel(1, this);
+        this.nextSpawn = l.possiblyObstacles.get(Math.randomRange(0, l.possiblyObstacles.length - 1));
+        this.nextSpawnTime = 0;
+
+        this.player = new Player(this);
+        this.entities.push(this.player);
     }
 
     isInput(input: Input): boolean {
