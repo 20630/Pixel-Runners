@@ -1,38 +1,30 @@
 class Menu {
     state: number = 0;
 
-    constructor () {
-        this.startGame();
-    }
+    constructor () {}
 
-    update (): void {
+    update(): void {
         switch (this.state) {
-            case 1: 
+            case 0: 
                 basic.showLeds(`
                 . . . . .
                 . . . . .
                 . . . . .
                 . . . . .
                 . . . . .
-                `)
+                `);
                 this.state++;
                 break;
-            case 2:
+            case 1:
                 basic.showLeds(`
                 . # # # .
                 . # . . #
                 . # # # .
                 . # . . .
                 . # . . .
-                `)
-                this.state--;
+                `);
+                this.state = 0;
                 break;
         }
     }
-    
-    startGame() {
-
-    }
-
-    
 }

@@ -13,6 +13,8 @@ class Game {
     frameAmount: number = 0;
     inputs: Input[] = [];
 
+    menu: Menu;
+
     constructor() {
         this.start();
     }
@@ -20,28 +22,14 @@ class Game {
     start(): void {
         let player: Player;
         this.registerInputListeners();
+        this.menu = new Menu();
 
         while (true) {
             let start: number = input.runningTime();
 
             switch (this.gameState) {
                 case GameState.MENU:
-                    while (!this.isInput(Input.BUTTON_A_CLICK)) {
-                        basic.showLeds(`
-                        . . . . .
-                        . . . . .
-                        . . . . .
-                        . . . . .
-                        . . . . .
-                        `)
-                        basic.showLeds(`
-                        . # # # .
-                        . # . . #
-                        . # # # .
-                        . # . . .
-                        . # . . .
-                        `)
-                    }
+                    this.menu.update();
 
                     if (this.isInput(Input.BUTTON_A_CLICK)) {
                         player = new Player(this);
