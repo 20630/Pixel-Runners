@@ -5,13 +5,20 @@ enum GameState {
 }
 
 class Game {
-    entities: Entity[] = [];
     screen: Image = images.createImage("");
     gameState: GameState = GameState.MENU;
-    readonly FRAME_RATE = 10; //Amount of frames per second, also determines game speed.
+
+    level: number = 1;
+    levelDistance: number = 0;
+    nextSpawn: Obstacle;
+    nextSpawnTime: number = 0;
+    private readonly TIME_BETWEEN_LEVELS: number = 20;
 
     frameAmount: number = 0;
+    readonly FRAME_RATE = 10; //Amount of frames per second, also determines game speed.
+
     inputs: Input[] = [];
+    entities: Entity[] = [];
 
     constructor() {
         this.start();
@@ -31,20 +38,43 @@ class Game {
                         player = new Player(this);
                         this.entities.push(player);
                         this.gameState = GameState.IN_GAME;
+                        this.level = 1;
+                        this.levelDistance = 0;
                     }
                     break;
                 case GameState.IN_GAME:
-                    if (this.frameAmount % 10 == 0) {
-                        this.entities.push(new Obstacle(this));
+                    let level = Levels.getLevel(this.level, this);
+                    
+                    let beforeStart = this.levelDistance < this.TIME_BETWEEN_LEVELS;
+                    let afterEnd = this.levelDistance > level.length + this.TIME_BETWEEN_LEVELS;
+
+                    if (afterEnd) {
+                        this.level++;
+                        this.levelDistance = 0;
+                    }
+
+                    if (!beforeStart) {
+                        if (this.nextSpawnTime == 0) {
+                            if (this.nextSpawn == null) {
+                                this.nextSpawn = level.possiblyObstacles.get(Math.randomRange(0, level.possiblyObstacles.length - 1));
+                            }
+                            this.entities.push(this.nextSpawn);
+                            this.nextSpawn = level.possiblyObstacles.get(Math.randomRange(0, level.possiblyObstacles.length - 1));
+                            this.nextSpawnTime = Math.randomRange(this.nextSpawn.minRestTime, this.nextSpawn.maxRestTime);
+                        } else {
+                            this.nextSpawnTime--;
+                        }
                     }
 
                     this.update();
                     this.checkCollisions();
+                    this.levelDistance++;
                     break;
             }
 
             this.inputs = [];
             this.render();
+            this.frameAmount++;
 
             //Pauses the program so it has a stable frame rate.
             basic.pause(start + 1000 / this.FRAME_RATE - input.runningTime());
@@ -63,8 +93,6 @@ class Game {
             }
         }
         this.screen.plotImage();
-        
-        this.frameAmount++;
     }
 
     update(): void {
