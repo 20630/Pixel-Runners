@@ -50,7 +50,7 @@ class Game {
                 case GameState.MENU:
                     this.menu.update();
 
-                    if (this.isInput(Input.BUTTON_A_CLICK)) {
+                    if (this.isInput(Input.BUTTON_A_DOWN)) {
                         this.play();
                     }
                     break;
@@ -95,7 +95,7 @@ class Game {
                     break;
                 case GameState.SCORE:
                     basic.showNumber(this.score);
-                    if (this.isInput(Input.BUTTON_A_CLICK)) {
+                    if (this.isInput(Input.BUTTON_A_DOWN)) {
                         this.gameState = GameState.MENU;
                         this.entities = [];
                         this.score = 0;
@@ -186,9 +186,35 @@ class Game {
                 if (!this.isInput(Input.BUTTON_A_UP))
                     this.inputs.push(Input.BUTTON_A_UP);
             });
-        input.onButtonPressed(Button.A, () => {
-            if (!this.isInput(Input.BUTTON_A_CLICK))
-                this.inputs.push(Input.BUTTON_A_CLICK);
+        control.onEvent(
+            EventBusSource.MICROBIT_ID_BUTTON_B,
+            EventBusValue.MICROBIT_BUTTON_EVT_DOWN,
+            () => {
+                if (!this.isInput(Input.BUTTON_B_DOWN))
+                    this.inputs.push(Input.BUTTON_B_DOWN);
+            });
+        control.onEvent(
+            EventBusSource.MICROBIT_ID_BUTTON_B,
+            EventBusValue.MICROBIT_BUTTON_EVT_UP,
+            () => {
+                if (!this.isInput(Input.BUTTON_B_UP))
+                    this.inputs.push(Input.BUTTON_B_UP);
+            });
+        pins.onPulsed(DigitalPin.P0, PulseValue.High, () => {
+            if (!this.isInput(Input.BUTTON_A_DOWN))
+                this.inputs.push(Input.BUTTON_A_DOWN);
+        });  
+        pins.onPulsed(DigitalPin.P0, PulseValue.Low, () => {
+            if (!this.isInput(Input.BUTTON_A_UP))
+                this.inputs.push(Input.BUTTON_A_UP);
+        });
+        pins.onPulsed(DigitalPin.P2, PulseValue.High, () => {
+            if (!this.isInput(Input.BUTTON_B_DOWN))
+                this.inputs.push(Input.BUTTON_B_DOWN);
+        });
+        pins.onPulsed(DigitalPin.P2, PulseValue.Low, () => {
+            if (!this.isInput(Input.BUTTON_B_UP))
+                this.inputs.push(Input.BUTTON_B_UP);
         });
     }
 }

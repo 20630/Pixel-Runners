@@ -6,13 +6,7 @@ class Menu {
     update(): void {
         switch (this.state) {
             case 0: 
-                basic.showLeds(`
-                . . . . .
-                . . . . .
-                . . . . .
-                . . . . .
-                . . . . .
-                `);
+                basic.showLeds(" ");
                 this.state++;
                 break;
             case 1:
