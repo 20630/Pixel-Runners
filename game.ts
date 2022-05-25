@@ -41,6 +41,8 @@ class Game {
         this.entities = [];
         this.score = 0;
 
+        led.setDisplayMode(DisplayMode.Greyscale);
+
         while (true) {
             let start: number = input.runningTime();
 
@@ -146,7 +148,7 @@ class Game {
         this.screen.clear();
         for (const e of this.entities) {
             for (const p of e.leds) {
-                this.screen.setPixel(p.x, 4 - p.y, true); // 4 - y because y is from down to up instead of up to down.
+                this.screen.setPixelBrightness(p.x, 4 - p.y, p.brightness); // 4 - y because y is from down to up instead of up to down.
             }
         }
         this.screen.plotImage();

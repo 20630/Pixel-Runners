@@ -4,7 +4,7 @@ class Obstacle extends Entity {
     maxRestTime: number;
 
     constructor(game: Game) {
-        super(5, 0, game);
+        super(5, 0, game, 50);
     }
 
     update(): void {
@@ -35,34 +35,35 @@ class Obstacles {
 
     public static getObstacle(obstacle: number, game: Game) {
         let o: Obstacle = new Obstacle(game);
+        const br: number = 50;
         switch (obstacle) {
             case this.SMALL:
                 break;
             case this.MEDIUM:
-                o.addRelativeLed(0, 1);
+                o.addRelativeLed(0, 1, br);
                 break;
             case this.BIG:
-                o.addRelativeLed(0, 1)
-                 .addRelativeLed(0, 2);
+                o.addRelativeLed(0, 1, br)
+                 .addRelativeLed(0, 2, br);
                 break;
             case this.SMALL_WIDE:
-                o.addRelativeLed(1, 0);
+                o.addRelativeLed(1, 0, br);
                 break;
             case this.MEDIUM_WIDE:
-                o.addRelativeLed(1, 0)
-                 .addRelativeLed(0, 1)
-                 .addRelativeLed(1, 1);
+                o.addRelativeLed(1, 0, br)
+                 .addRelativeLed(0, 1, br)
+                 .addRelativeLed(1, 1, br);
                 break;
             case this.BIG_WIDE:
-                o.addRelativeLed(1, 0)
-                 .addRelativeLed(0, 1)
-                 .addRelativeLed(1, 1)
-                 .addRelativeLed(0, 2)
-                 .addRelativeLed(1, 2);
+                o.addRelativeLed(1, 0, br)
+                 .addRelativeLed(0, 1, br)
+                 .addRelativeLed(1, 1, br)
+                 .addRelativeLed(0, 2, br)
+                 .addRelativeLed(1, 2, br);
                 break;
             case this.SMALL_HEAD_HITTER:
-                o.addRelativeLed(0, 3)
-                 .addRelativeLed(0, 4);   
+                o.addRelativeLed(0, 3, br)
+                 .addRelativeLed(0, 4, br);   
                 break; 
         }
         return o;
