@@ -92,8 +92,11 @@ class Game {
                     this.levelDistance++;
                     break;
                 case GameState.SCORE:
+                    basic.showNumber(this.score);
                     if (this.isInput(Input.BUTTON_A_CLICK)) {
                         this.gameState = GameState.MENU;
+                        this.entities = [];
+                        this.score = 0;
                     }
                     break;    
             }

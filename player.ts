@@ -58,9 +58,5 @@ class Player extends Entity {
 
     onCollision(collidedWith: Entity): void {
         this.game.gameState = GameState.SCORE;
-        let score = this.game.score;
-        basic.showNumber(score);
-        this.game.score = 0;
-        this.game.entities = [];
     }
 }
