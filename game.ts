@@ -27,7 +27,7 @@ class Game {
 
             switch (this.gameState) {
                 case GameState.MENU:
-                    if (this.isInput(Input.BUTTON_A_CLICK)) {
+                    if (this.isInput(Input.BUTTON_A_DOWN)) {
                         player = new Player(this);
                         this.entities.push(player);
                         this.gameState = GameState.IN_GAME;
@@ -97,9 +97,36 @@ class Game {
                 if (!this.isInput(Input.BUTTON_A_UP))
                     this.inputs.push(Input.BUTTON_A_UP);
             });
-        input.onButtonPressed(Button.A, () => {
-            if (!this.isInput(Input.BUTTON_A_CLICK))
-                this.inputs.push(Input.BUTTON_A_CLICK);
+        pins.onPulsed(DigitalPin.P0, PulseValue.High, () => {
+            if (!this.isInput(Input.BUTTON_A_DOWN))
+                this.inputs.push(Input.BUTTON_A_DOWN);
+        });
+        pins.onPulsed(DigitalPin.P0, PulseValue.Low, () => {
+            if (!this.isInput(Input.BUTTON_A_UP))
+                this.inputs.push(Input.BUTTON_A_UP);
+        });
+
+        control.onEvent(
+            EventBusSource.MICROBIT_ID_BUTTON_B,
+            EventBusValue.MICROBIT_BUTTON_EVT_DOWN,
+            () => {
+                if (!this.isInput(Input.BUTTON_B_DOWN))
+                    this.inputs.push(Input.BUTTON_B_DOWN);
+            });
+        control.onEvent(
+            EventBusSource.MICROBIT_ID_BUTTON_B,
+            EventBusValue.MICROBIT_BUTTON_EVT_UP,
+            () => {
+                if (!this.isInput(Input.BUTTON_B_UP))
+                    this.inputs.push(Input.BUTTON_B_UP);
+            });
+        pins.onPulsed(DigitalPin.P2, PulseValue.High, () => {
+            if (!this.isInput(Input.BUTTON_B_DOWN))
+                this.inputs.push(Input.BUTTON_B_DOWN);
+        });
+        pins.onPulsed(DigitalPin.P2, PulseValue.Low, () => {
+            if (!this.isInput(Input.BUTTON_B_UP))
+                this.inputs.push(Input.BUTTON_B_UP);
         });
     }
 }
