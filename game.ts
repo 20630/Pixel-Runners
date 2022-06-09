@@ -21,18 +21,15 @@ class Game {
     inputs: Input[];
     entities: Entity[];
 
-    menu: Menu;
-  
     score: number;
 
     constructor() {
         this.start();
     }
-    
+
     start(): void {
         let player: Player;
         this.registerInputListeners();
-        this.menu = new Menu();
 
         this.screen = images.createImage("");
         this.gameState = GameState.MENU;
@@ -43,12 +40,34 @@ class Game {
 
         led.setDisplayMode(DisplayMode.Greyscale);
 
+        let menuState = 0;
+
         while (true) {
             let start: number = input.runningTime();
 
             switch (this.gameState as number) {
                 case GameState.MENU:
-                    this.menu.update();
+
+                    switch (menuState) {
+                        case 0:
+                            basic.showLeds("");
+                            menuState++;
+                            break;
+                        case 1:
+                            basic.showLeds(`
+                            . # # # .
+                            . # . . #
+                            . # # # .
+                            . # . . .
+                            . # . . .
+                            `);
+                            menuState++;
+                            break;
+                        case 2:
+                            basic.showLeds("");
+                            menuState = 0;
+                            break;
+                    }
 
                     if (this.isInput(Input.BUTTON_A_DOWN)) {
                         this.play();
@@ -56,7 +75,7 @@ class Game {
                     break;
                 case GameState.IN_GAME:
                     let level = Levels.getLevel(this.level, this);
-                    
+
                     let beforeStart = this.levelDistance <= this.TIME_BETWEEN_LEVELS;
                     let afterEnd = this.levelDistance > level.length + this.TIME_BETWEEN_LEVELS;
 
@@ -79,10 +98,10 @@ class Game {
                             this.nextSpawn = level.possibleObstacles.get(Math.randomRange(0, level.possibleObstacles.length - 1));
 
                             if (this.levelDistance + this.nextSpawn.minRestTime > level.length + this.TIME_BETWEEN_LEVELS) {
-                               //not enough time to spawn another obstacle.
-                               this.nextSpawnTime = -1;
+                                //not enough time to spawn another obstacle.
+                                this.nextSpawnTime = -1;
                             } else {
-                               this.nextSpawnTime = Math.randomRange(this.nextSpawn.minRestTime, this.nextSpawn.maxRestTime);
+                                this.nextSpawnTime = Math.randomRange(this.nextSpawn.minRestTime, this.nextSpawn.maxRestTime);
                             }
                         } else {
                             this.nextSpawnTime--;
@@ -100,16 +119,16 @@ class Game {
                         this.entities = [];
                         this.score = 0;
                     }
-                    break;    
+                    break;
             }
 
             this.inputs = [];
-            
+
             //Score uses normal basic.showNumber(), so don't override that.
             //Might change this because it looks ugly.
-            if (this.gameState as number != GameState.SCORE) 
+            if (this.gameState as number != GameState.SCORE)
                 this.render();
-            
+
             this.frameAmount++;
 
             //Pauses the program so it has a stable frame rate.
@@ -200,21 +219,33 @@ class Game {
                 if (!this.isInput(Input.BUTTON_B_UP))
                     this.inputs.push(Input.BUTTON_B_UP);
             });
-        pins.onPulsed(DigitalPin.P0, PulseValue.High, () => {
-            if (!this.isInput(Input.BUTTON_A_DOWN))
-                this.inputs.push(Input.BUTTON_A_DOWN);
-        });  
-        pins.onPulsed(DigitalPin.P0, PulseValue.Low, () => {
-            if (!this.isInput(Input.BUTTON_A_UP))
-                this.inputs.push(Input.BUTTON_A_UP);
-        });
-        pins.onPulsed(DigitalPin.P2, PulseValue.High, () => {
-            if (!this.isInput(Input.BUTTON_B_DOWN))
-                this.inputs.push(Input.BUTTON_B_DOWN);
-        });
-        pins.onPulsed(DigitalPin.P2, PulseValue.Low, () => {
-            if (!this.isInput(Input.BUTTON_B_UP))
-                this.inputs.push(Input.BUTTON_B_UP);
-        });
+        control.onEvent(
+            EventBusSource.MICROBIT_ID_IO_P0,
+            EventBusValue.MICROBIT_BUTTON_EVT_DOWN,
+            () => {
+                if (!this.isInput(Input.BUTTON_A_DOWN))
+                    this.inputs.push(Input.BUTTON_A_DOWN);
+            });
+        control.onEvent(
+            EventBusSource.MICROBIT_ID_IO_P0,
+            EventBusValue.MICROBIT_BUTTON_EVT_UP,
+            () => {
+                if (!this.isInput(Input.BUTTON_A_UP))
+                    this.inputs.push(Input.BUTTON_A_UP);
+            });
+        control.onEvent(
+            EventBusSource.MICROBIT_ID_IO_P2,
+            EventBusValue.MICROBIT_BUTTON_EVT_DOWN,
+            () => {
+                if (!this.isInput(Input.BUTTON_B_DOWN))
+                    this.inputs.push(Input.BUTTON_B_DOWN);
+            });
+        control.onEvent(
+            EventBusSource.MICROBIT_ID_IO_P2,
+            EventBusValue.MICROBIT_BUTTON_EVT_UP,
+            () => {
+                if (!this.isInput(Input.BUTTON_B_UP))
+                    this.inputs.push(Input.BUTTON_B_UP);
+            });
     }
 }
