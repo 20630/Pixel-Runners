@@ -181,9 +181,61 @@ class Game {
                 if (!this.isInput(Input.BUTTON_A_UP))
                     this.inputs.push(Input.BUTTON_A_UP);
             });
-        input.onButtonPressed(Button.A, () => {
-            if (!this.isInput(Input.BUTTON_A_CLICK))
-                this.inputs.push(Input.BUTTON_A_CLICK);
+        pins.onPulsed(DigitalPin.P0, PulseValue.High, () => {
+            if (!this.isInput(Input.BUTTON_A_DOWN))
+                this.inputs.push(Input.BUTTON_A_DOWN);
         });
+        pins.onPulsed(DigitalPin.P0, PulseValue.Low, () => {
+            if (!this.isInput(Input.BUTTON_A_UP))
+                this.inputs.push(Input.BUTTON_A_UP);
+        });
+
+        control.onEvent(
+            EventBusSource.MICROBIT_ID_BUTTON_B,
+            EventBusValue.MICROBIT_BUTTON_EVT_DOWN,
+            () => {
+                if (!this.isInput(Input.BUTTON_B_DOWN))
+                    this.inputs.push(Input.BUTTON_B_DOWN);
+            });
+        control.onEvent(
+            EventBusSource.MICROBIT_ID_BUTTON_B,
+            EventBusValue.MICROBIT_BUTTON_EVT_UP,
+            () => {
+                if (!this.isInput(Input.BUTTON_B_UP))
+                    this.inputs.push(Input.BUTTON_B_UP);
+            });
+
+        //Configure the pins so that the onEvent() works.
+        pins.setEvents(DigitalPin.P0, PinEventType.Touch);
+        pins.setEvents(DigitalPin.P2, PinEventType.Touch);
+
+        control.onEvent(
+            EventBusSource.MICROBIT_ID_IO_P0,
+            EventBusValue.MICROBIT_BUTTON_EVT_DOWN,
+            () => {
+                if (!this.isInput(Input.BUTTON_A_DOWN))
+                    this.inputs.push(Input.BUTTON_A_DOWN);
+            });
+        control.onEvent(
+            EventBusSource.MICROBIT_ID_IO_P0,
+            EventBusValue.MICROBIT_BUTTON_EVT_UP,
+            () => {
+                if (!this.isInput(Input.BUTTON_A_UP))
+                    this.inputs.push(Input.BUTTON_A_UP);
+            });
+        control.onEvent(
+            EventBusSource.MICROBIT_ID_IO_P2,
+            EventBusValue.MICROBIT_BUTTON_EVT_DOWN,
+            () => {
+                if (!this.isInput(Input.BUTTON_B_DOWN))
+                    this.inputs.push(Input.BUTTON_B_DOWN);
+            });
+        control.onEvent(
+            EventBusSource.MICROBIT_ID_IO_P2,
+            EventBusValue.MICROBIT_BUTTON_EVT_UP,
+            () => {
+                if (!this.isInput(Input.BUTTON_B_UP))
+                    this.inputs.push(Input.BUTTON_B_UP);
+            });
     }
 }
