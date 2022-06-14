@@ -29,8 +29,9 @@ abstract class Entity {
      * @param y The y position the led should be.
      * @param game The game the entity is used in.
      */
-    constructor(x: number, y: number, game: Game) {
-        this.leds.push(new Led(x, y));
+    constructor(x: number, y: number, game: Game, brightness?: number) {
+        let l = new Led(x, y, brightness);
+        this.leds.push(l);
         this.game = game;
     };
 
@@ -54,8 +55,8 @@ abstract class Entity {
      * @param x The x position the led should move to.
      * @param y The y position the led should move to.
      */
-    addLed(x: number, y: number): Entity {
-        this.leds.push(new Led(x, y));
+    addLed(x: number, y: number, brightness?: number): Entity {
+        this.leds.push(new Led(x, y, brightness));
         return this;
     }
 
@@ -65,8 +66,8 @@ abstract class Entity {
      * @param x The x position the led should move to relative to the first led.
      * @param y The y position the led should move to relative to the first led.
      */
-    addRelativeLed(x: number, y: number): Entity {
-        this.leds.push(new Led(this.xPosition + x, this.yPosition + y));
+    addRelativeLed(x: number, y: number, brightness?: number): Entity {
+        this.leds.push(new Led(this.xPosition + x, this.yPosition + y, brightness));
         return this;
     }
 

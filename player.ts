@@ -4,7 +4,7 @@ class Player extends Entity {
     inHover: boolean = false;
     private hoverStart: number; //Frame when hovering started
 
-    private readonly MAX_HOVER_TIME = 5; //Time in frames
+    private readonly MAX_HOVER_TIME = 5;
     private readonly MIN_JUMP_HEIGHT = 2;
     private readonly MAX_JUMP_HEIGHT = 3;
 
@@ -58,9 +58,5 @@ class Player extends Entity {
 
     onCollision(collidedWith: Entity): void {
         this.game.gameState = GameState.SCORE;
-        let score = this.game.score;
-        basic.showNumber(score);
-        this.game.score = 0;
-        this.game.entities = [];
     }
 }

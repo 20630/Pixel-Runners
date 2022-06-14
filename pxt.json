@@ -15,8 +15,7 @@
         "obstacle.ts",
         "game.ts",
         "led.ts",
-        "level.ts",
-        "menu.ts"
+        "stage.ts"
     ],
     "testFiles": [
         "test.ts"
