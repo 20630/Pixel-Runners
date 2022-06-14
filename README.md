@@ -5,7 +5,10 @@ Een side-scrolling endless runner game gemaakt voor de Micro:bit. Je moet als pi
 ## Gebruik
 Deze game is volledig te spelen op de eerste versie van Micro:bit, ook zonder breadboard.
 
-#### Instructies
+#### Download
+Je kan deze repository downloaden als zip en dan importeren in https://makecode.microbit.org/. Via daar kan je het compilen.
+
+#### Spelinstructies
 Knop A wordt gebruikt voor het springen. Als je deze ingedrukt houdt, blijf je voor even zweven.
 Knop B wordt gebruikt voor het verdergaan in de menu's.
 
