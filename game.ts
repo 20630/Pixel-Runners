@@ -8,11 +8,11 @@ class Game {
     screen: Image;
     gameState: GameState;
 
-    level: number;
-    levelDistance: number;
-    nextSpawn: Obstacle;
-    nextSpawnTime: number;
-    private readonly TIME_BETWEEN_LEVELS: number = 10;
+    stage: number;
+    stageDistance: number; //How far the player is into the stage
+    nextSpawn: Obstacle; //The next obstacle that should spawn
+    nextSpawnTime: number; //The time in frames before the next obstacle should spawn
+    private readonly TIME_BETWEEN_STAGES: number = 10; //The time in frames before the next stage should start
 
     frameAmount: number;
     readonly FRAME_RATE = 10; //Amount of frames per second, also determines game speed.
@@ -42,12 +42,12 @@ class Game {
 
         let menuState = 0;
 
+        //Game loop
         while (true) {
             let start: number = input.runningTime();
 
             switch (this.gameState as number) {
                 case GameState.MENU:
-
                     switch (menuState) {
                         case 0:
                             basic.showLeds("");
@@ -69,36 +69,36 @@ class Game {
                             break;
                     }
 
-                    if (this.isInput(Input.BUTTON_A_DOWN)) {
+                    if (this.isInput(Input.BUTTON_B_DOWN)) {
                         this.play();
                     }
                     break;
                 case GameState.IN_GAME:
-                    let level = Levels.getLevel(this.level, this);
+                    let stage = Stages.getStage(this.stage, this);
 
-                    let beforeStart = this.levelDistance <= this.TIME_BETWEEN_LEVELS;
-                    let afterEnd = this.levelDistance > level.length + this.TIME_BETWEEN_LEVELS;
+                    let beforeStart = this.stageDistance <= this.TIME_BETWEEN_STAGES;
+                    let afterEnd = this.stageDistance > stage.length + this.TIME_BETWEEN_STAGES;
 
                     if (afterEnd) {
-                        if (this.level == 10) {
+                        if (this.stage > Stages.STAGE_AMOUNT) {
                             this.gameState = GameState.SCORE;
                             this.entities = [];
                         } else {
-                            this.nextLevel();
+                            this.nextStage();
                         }
                     }
 
-                    //recalculate because level change possibly.
-                    level = Levels.getLevel(this.level, this);
-                    beforeStart = this.levelDistance <= this.TIME_BETWEEN_LEVELS;
+                    //Recalculate because the level could have changed.
+                    stage = Stages.getStage(this.stage, this);
+                    beforeStart = this.stageDistance <= this.TIME_BETWEEN_STAGES;
 
                     if (!beforeStart) {
                         if (this.nextSpawnTime == 0) {
                             this.entities.push(this.nextSpawn);
-                            this.nextSpawn = level.possibleObstacles.get(Math.randomRange(0, level.possibleObstacles.length - 1));
+                            this.nextSpawn = stage.possibleObstacles.get(Math.randomRange(0, stage.possibleObstacles.length - 1));
 
-                            if (this.levelDistance + this.nextSpawn.minRestTime > level.length + this.TIME_BETWEEN_LEVELS) {
-                                //not enough time to spawn another obstacle.
+                            if (this.stageDistance + this.nextSpawn.minRestTime > stage.length + this.TIME_BETWEEN_STAGES) {
+                                //Not enough time to spawn another obstacle before the next stage
                                 this.nextSpawnTime = -1;
                             } else {
                                 this.nextSpawnTime = Math.randomRange(this.nextSpawn.minRestTime, this.nextSpawn.maxRestTime);
@@ -110,11 +110,11 @@ class Game {
 
                     this.update();
                     this.checkCollisions();
-                    this.levelDistance++;
+                    this.stageDistance++;
                     break;
                 case GameState.SCORE:
                     basic.showNumber(this.score);
-                    if (this.isInput(Input.BUTTON_A_DOWN)) {
+                    if (this.isInput(Input.BUTTON_B_DOWN)) {
                         this.gameState = GameState.MENU;
                         this.entities = [];
                         this.score = 0;
@@ -125,7 +125,6 @@ class Game {
             this.inputs = [];
 
             //Score uses normal basic.showNumber(), so don't override that.
-            //Might change this because it looks ugly.
             if (this.gameState as number != GameState.SCORE)
                 this.render();
 
@@ -139,10 +138,10 @@ class Game {
     play() {
         this.gameState = GameState.IN_GAME;
 
-        this.level = 1;
-        this.levelDistance = 0;
+        this.stage = 1;
+        this.stageDistance = 0;
 
-        let l = Levels.getLevel(this.level, this);
+        let l = Stages.getStage(this.stage, this);
         this.nextSpawn = l.possibleObstacles.get(Math.randomRange(0, l.possibleObstacles.length - 1));
         this.nextSpawnTime = 0;
 
@@ -150,11 +149,11 @@ class Game {
         this.entities.push(this.player);
     }
 
-    nextLevel() {
-        this.level++;
-        this.levelDistance = 0;
+    nextStage() {
+        this.stage++;
+        this.stageDistance = 0;
 
-        let l = Levels.getLevel(this.level, this);
+        let l = Stages.getStage(this.stage, this);
         this.nextSpawn = l.possibleObstacles.get(Math.randomRange(0, l.possibleObstacles.length - 1));
         this.nextSpawnTime = 0;
     }
@@ -191,6 +190,7 @@ class Game {
     }
 
     registerInputListeners(): void {
+        //Microbit buttons
         control.onEvent(
             EventBusSource.MICROBIT_ID_BUTTON_A,
             EventBusValue.MICROBIT_BUTTON_EVT_DOWN,
@@ -219,6 +219,12 @@ class Game {
                 if (!this.isInput(Input.BUTTON_B_UP))
                     this.inputs.push(Input.BUTTON_B_UP);
             });
+
+        //Breadboard buttons
+        //P0 is button A, P2 is button B
+        pins.setEvents(DigitalPin.P0, PinEventType.Touch);
+        pins.setEvents(DigitalPin.P2, PinEventType.Touch);
+
         control.onEvent(
             EventBusSource.MICROBIT_ID_IO_P0,
             EventBusValue.MICROBIT_BUTTON_EVT_DOWN,
