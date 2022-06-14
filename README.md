@@ -1,31 +1,20 @@
 
-> Open this page at [https://20630.github.io/pixel-runners/](https://20630.github.io/pixel-runners/)
+# Pixel Runners
+Een side-scrolling endless runner game gemaakt voor de Micro:bit. Je moet als pixel de binnenkomende obstakels vermijden terwijl ze steeds sneller naar je toe komen.
 
-## Use as Extension
+## Gebruik
+Deze game is volledig te spelen op de eerste versie van Micro:bit, ook zonder breadboard.
 
-This repository can be added as an **extension** in MakeCode.
+#### Instructies
+Knop A wordt gebruikt voor het springen. Als je deze ingedrukt houdt, blijf je voor even zweven.
+Knop B wordt gebruikt voor het verdergaan in de menu's.
 
-* open [https://makecode.microbit.org/](https://makecode.microbit.org/)
-* click on **New Project**
-* click on **Extensions** under the gearwheel menu
-* search for **https://github.com/20630/pixel-runners** and import
+#### Breadboard
+Je kan ook een breadboard met knoppen aansluiten, zodat je op die manier kan spelen.
 
-## Edit this project ![Build status badge](https://github.com/20630/pixel-runners/workflows/MakeCode/badge.svg)
+Als je wel een breadboard met knoppen wilt gebruiken, sluit dan een knop aan op P0 en op P2.
+P0 wordt dan knop A, en P2 wordt dan knop B.
 
-To edit this repository in MakeCode.
-
-* open [https://makecode.microbit.org/](https://makecode.microbit.org/)
-* click on **Import** then click on **Import URL**
-* paste **https://github.com/20630/pixel-runners** and click import
-
-## Blocks preview
-
-This image shows the blocks code from the last commit in master.
-This image may take a few minutes to refresh.
-
-![A rendered view of the blocks](https://github.com/20630/pixel-runners/raw/master/.github/makecode/blocks.png)
-
-#### Metadata (used for search, rendering)
-
-* for PXT/microbit
-<script src="https://makecode.com/gh-pages-embed.js"></script><script>makeCodeRender("{{ site.makecode.home_url }}", "{{ site.github.owner_name }}/{{ site.github.repository_name }}");</script>
+## Bijdragers
+Deze game is gemaakt door Jelte Rijks en Seth Marissen.
+Beiden hebben aan het hele product gewerkt, waarbij Jelte vooral de game zelf heeft gemaakt en Seth vooral de menu's en de functionaliteit van het breadboard.
